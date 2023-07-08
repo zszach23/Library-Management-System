@@ -5,8 +5,6 @@
 // Can browse, borrow, and return books in library and account, check their 
 // personal transaction history, and view details and change password
 
-package librarymanagementtester;
-
 import java.util.*;
 
 public class Student extends User {
