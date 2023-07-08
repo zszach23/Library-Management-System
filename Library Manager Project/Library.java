@@ -5,8 +5,6 @@
 // bookShelf stores all available books in library, and allTransactions
 // stores every transaction made on the system for all students
 
-package librarymanagementtester;
-
 import java.util.*;
 
 public class Library {
