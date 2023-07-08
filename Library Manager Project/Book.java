@@ -4,8 +4,6 @@
 // Book class defines a book object
 // Book has an id, title, author, and description/summary
 
-package librarymanagementtester;
-
 public class Book {
     private int id;
     private String title, author;
