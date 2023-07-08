@@ -6,8 +6,6 @@
 // Transaction holds an id value, a book, the date created, and what type
 // of transaction was made
 
-package librarymanagementtester;
-
 import java.util.*;
 
 public class Transaction {
