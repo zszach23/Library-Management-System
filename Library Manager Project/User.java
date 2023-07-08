@@ -4,9 +4,7 @@
 // User class acts a superclass that stores an id, name and password
 // for Student and Librarian classes
 
-package librarymanagementtester;
-
-public class User extends Library {
+public abstract class User {
     private int id;
     private String name;
     private String password;
