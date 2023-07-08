@@ -3,8 +3,6 @@
 
 // Tests the Library System
 
-package librarymanagementtester;
-
 import java.util.*;
 
 public class LibraryManagementTester {
