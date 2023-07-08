@@ -5,8 +5,6 @@
 // Can look up student information, has admin password priveleges, and can
 // view all transactions made on the system
 
-package librarymanagementtester;
-
 public class Librarian extends User {
     private String department;
     
