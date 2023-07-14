@@ -7,91 +7,104 @@
 
 import java.util.*;
 
-public class Student extends User {
+public class Student extends User 
+{
     private ArrayList<Book> booksBorrowed;
     private ArrayList<Transaction> personalTransactions;
     
-    // Constructor takes User parameters and initializes booksBorrowed and
-    // personalTransactions fields
-    public Student(int id, String name, String password) {
+    public Student(int id, String name, String password) 
+    {
         super(id, name, password);
-        booksBorrowed = new ArrayList<Book>();
-        personalTransactions = new ArrayList<Transaction>();
+        this.booksBorrowed = new ArrayList<Book>();
+        this.personalTransactions = new ArrayList<Transaction>();
     }
     
-    public ArrayList<Book> getBooksBorrowed() {
-        return booksBorrowed;
+    public ArrayList<Book> getBooksBorrowed() 
+    {
+        return this.booksBorrowed;
     }
     
-    // Prints the ID, Name, and Password of the Student
-    public void printStudentInfo() {
+    public void printStudentInfo() 
+    {
         System.out.println("Student Information: ");
         printUserInfo();
     }
+
+    public Book findBookinAccount(int bookID) 
+    {
+        for (int borrowedBook = 0; borrowedBook < this.booksBorrowed.size(); borrowedBook++) 
+        {
+            if (this.booksBorrowed.get(borrowedBook).getID() == bookID) 
+            {
+                return this.booksBorrowed.get(borrowedBook);
+            }
+        }
+
+        return null;
+    }
     
-    // Borrows a book from the library and stores it in account (max 3)
-    public void borrowBook(Library lib, Book b) {
-        
-        // Check if the book id is valid
-        if (b.getID() < 0 || b.getID() > lib.getBookShelf().length) {
+    public void borrowBook(Book book) 
+    {        
+        if (book.getID() < 0 || book.getID() >= Library.getBookShelf().length) 
+        {
             System.out.println("Invalid Book ID");
-            
-        // Check if the book is already taken    
-        } else if (lib.getBookShelf()[b.getID()] == null) {
+        } 
+        else if (Library.getBookShelf()[book.getID()] == null) 
+        {
             System.out.println("Book not in stock");
         
-        // Adds book to booksBorrwoed, updates both transactions, and prints out
-        // the book information
-        } else {
-            booksBorrowed.add(b);
-            personalTransactions.add(new Transaction(b, "Borrow"));
-            lib.addTransaction(b, "Borrow");
+        } 
+        else 
+        {
+            booksBorrowed.add(book);
+            personalTransactions.add(new Transaction(book, "Borrow"));
+            Library.addTransaction(book, "Borrow");
+
             System.out.println("\nTransaction Successful");
             System.out.println("You are now borrowing: ");
-            b.printBookInfo();
+            book.printBookInfo();
         }
-        
+    }
+
+    public void returnBook(Book book) 
+    {
+        this.booksBorrowed.remove(book);
+        Library.addBooktoShelf(book);
+
+        this.personalTransactions.add(new Transaction(book, "Return"));
+        Library.addTransaction(book, "Return");
     }
     
-    // Returns the given book back to the library
-    // Removes book from booksBorrowed, adds it back to the library, and 
-    // updates the transactions
-    public void returnBook(Library lib, Book b) {
-        booksBorrowed.remove(b);
-        lib.addBooktoShelf(b);
-        personalTransactions.add(new Transaction(b, "Return"));
-        lib.addTransaction(b, "Return");
-    }
-    
-    //Prints out the books the student is currently holding in their account
-    public void printBooksBorrowed() {
-        
-        // Check if student is borrowing any books
-        if (booksBorrowed.size() == 0) {
+    public void printBooksBorrowed() 
+    {        
+        if (booksBorrowed.size() == 0) 
+        {
             System.out.println("Not Borrowing Any Books\n");
             return;
         }
         
-        for (int i = 0; i < booksBorrowed.size(); i++) {
-            booksBorrowed.get(i).printBookInfo();
+        for (int borrowedBook = 0; borrowedBook < booksBorrowed.size(); borrowedBook++) 
+        {
+            booksBorrowed.get(borrowedBook).printBookInfo();
             System.out.println();
         }
     }
     
-    // Prints every transaction the student has made
-   public void printTransactionHistory() {
-       System.out.println("User: " + getName());
+   public void printTransactionHistory() 
+   {
+       System.out.println("User: " + getName() + "\n");
        
-       // Check if student has every made a transaction
-       if (personalTransactions.size() == 0) {
+       if (personalTransactions.size() == 0) 
+       {
            System.out.println("No Previous Transactions\n");
            return;
        }
        
        System.out.println("Transactions: " + personalTransactions.size() + "\n");
-       for (int i = 0; i < personalTransactions.size(); i++) {
-           System.out.println("Transaction " + i);
-           personalTransactions.get(i).printTransaction();
+       for (int transaction = 0; transaction < personalTransactions.size(); transaction++) 
+       {
+           System.out.println("Transaction " + transaction);
+           personalTransactions.get(transaction).printTransaction();
        }
    }
 }

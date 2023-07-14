@@ -8,36 +8,29 @@
 
 import java.util.*;
 
-public class Transaction {
+public class Transaction 
+{
     private int id;
     private Book book;
     private Date date;
     private String type;
     
-    // Constructor sets up book, fills in the date, and the type of transaction
-    public Transaction(Book book, String type) {
+    public Transaction(Book book, String type) 
+    {
         this.book = book;
         this.date = new Date();
         this.type = type;
     }
     
-    public int getTransactionID() {
+    public int getTransactionID() 
+    {
         return id;
     }
     
-    public Book getBookInfo() {
-        return book;
-    }
-    
-    public Date getDateOfTransaction() {
-        return date;
-    }
-    
-    // Prints the information involved within a transaction
-    // Date, type, and all the book information
-     public void printTransaction() {
-        System.out.println("Transaction Date: " + date);
-        System.out.println("Type: " + type);
-        getBookInfo().printBookInfo();
+     public void printTransaction() 
+     {
+        System.out.println("Transaction Date: " + this.date);
+        System.out.println("Type: " + this.type);
+        this.book.printBookInfo();
     }
 }

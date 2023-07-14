@@ -5,121 +5,97 @@
 
 import java.util.*;
 
-public class LibraryManagementTester {
+public class LibraryManagementTester 
+{
+    public static final int LIBRARIAN_ID = 100;
+    public static final int NUM_STUDENTS = 100;
 
-    public static void main(String[] args) {
-        
-        // Creates a new library and a new Student array of size 100
-        Library library = new Library();
+    public static final int STUDENT_LOGIN = 1;
+    public static final int LIBRARIAN_LOGIN = 2;
+    public static final int CREATE_NEW_STUDENT = 3;
+
+    public static int numActiveStudents = 0;
+    public static void main(String[] args) 
+    {
         Scanner scan = new Scanner(System.in);
-        Student[] students = new Student[100];
+        Student[] students = new Student[NUM_STUDENTS];
         Librarian librarian;
         
-        // Creates arrays that store title, author, and summary for each 100 Books
-        // in Library
-        String[] bookTitles = new String[100];
-        String[] bookAuthors = new String[100];
-        String[] bookSummary = new String[100];
-        
-        // Declare variables
-        int login, selection, studentAccounts = 0;
+        int login, selection;
         int studentID;
-        String studentName, studentPassword;
-        String librarianName, librarianDepartment, librarianPassword;
-        
+        String studentName = "", studentPassword = "";
+        String librarianName = "", librarianPassword = "";
+
         int bookID;
         Book bookSelection;
         String password;
         Student s;
+
+        Library.initializeBookShelf();
         
-        // Initializes the title, author, and summary at each index and creates
-        // a new book using each index
-        for (int i = 0; i < 100; i++) {
-            bookTitles[i] = "Book " + i;
-            bookAuthors[i] = "Book " + i + " Author";
-            bookSummary[i] = "Book " + i + " is found at local library";
-            library.addBooktoShelf(new Book(i, bookTitles[i], bookAuthors[i], bookSummary[i]));
-        }
-        
-        // Prompts user to set up librarian account to act as administrator
         System.out.println("Set up Librarian Account:");
-        System.out.print("Enter Name: ");
-        librarianName = scan.nextLine();
+        createUser(librarianName, librarianPassword);
+        librarian = new Librarian(LIBRARIAN_ID, librarianName, librarianPassword);
         
-        System.out.print("Enter Department: ");
-        librarianDepartment = scan.nextLine();
-        
-        System.out.print("Enter Password: ");
-        librarianPassword = scan.nextLine();
-        
-        librarian = new Librarian(100, librarianName, librarianPassword, librarianDepartment);
-        
-        // Infinite loop
-        while (true) {
-            
-            // Main Menu display prompts user login or create new account
-            System.out.println("\nMain Menu");
-            System.out.println("1: Login (Student)");
-            System.out.println("2: Login (Librarian)");
-            System.out.println("3: Create New Account (Student)\n");
+        while (true) 
+        {            
+            printMainMenu();
             
             login = scan.nextInt();
             
             // Login as a student
-            if (login == 1) {
-                
-                // Prompts for ID and password
+            if (login == STUDENT_LOGIN) 
+            {                
                 System.out.print("Enter Your ID: ");
                 studentID = scan.nextInt();
                 
                 System.out.print("Enter Your Password: ");
                 studentPassword = scan.next();
-                
+
                 // Checks if given ID is valid and if password matches
-                if (studentID <= studentAccounts && studentID >= 0 && students[studentID] != null
-                    && students[studentID].getPassword().equals(studentPassword)) {
+                if (studentID < numActiveStudents && studentID >= 0 && students[studentID] != null
+                    && students[studentID].getPassword().equals(studentPassword)) 
+                {
                     
                     System.out.println("Login Successful\n");
-                
-                // Either Invalid ID or Password entered    
-                } else {
+                } 
+                else 
+                {
                     
                     System.out.println("Error: Invalid ID or Password");
                     System.out.println("Returning to Main Menu...\n");
                     continue;
-                    
-                }
-              
-              // Librarian Login  
-            } else if (login == 2) {
-                
-                // Prompt user to enter password and check if matches stored
-                // password
+                }   
+            } 
+            else if (login == LIBRARIAN_LOGIN) 
+            {
                 System.out.print("Enter Admin Password:");
                 password = scan.next();
                 
-                if (librarian.getPassword().equals(password)) {
+                if (librarian.getPassword().equals(password)) 
+                {
                     System.out.println("Login Successful\n");
-                } else {
+                }
+                else 
+                {
                     System.out.println("Error: Invalid Password");
                     System.out.println("Returning to Main Menu...\n");
                     continue;
                 }
                 
-                // Print the Librarian Menu
                 printLibrarianMenu();
                 
-                // Loop until user log's out (command 4)
-                while ((selection = scan.nextInt()) != 4) {
-                    switch (selection) {
-                        
-                        // Librarian looks up a student's info using their ID
+                while ((selection = scan.nextInt()) != 4) 
+                {
+                    switch (selection) 
+                    {                        
                         case 1: 
                             
                             System.out.println("Enter Student ID");
                             studentID = scan.nextInt();
                             
-                            if (studentID < 0 || studentID > students.length) {
+                            if (studentID < 0 || studentID > students.length) 
+                            {
                                 System.out.println("Invalid Student ID");
                                 break;
                             }
@@ -131,7 +107,7 @@ public class LibraryManagementTester {
                         // Librarian prints every transaction made on the system
                         case 2:
                             
-                            library.printAllTransactions();
+                            Library.printAllTransactions();
                             break;
                         
                         // View Librarian Information and Settings
@@ -144,22 +120,25 @@ public class LibraryManagementTester {
                             selection = scan.nextInt();
                             
                             // Librarian changes password
-                            if (selection == 1) {
-                                
+                            if (selection == 1) 
+                            {                                
                                 // Verify current password
                                 System.out.print("Enter the current password: ");
                                 password = scan.next();
                                 
                                 // If valid password input, set password to new password
-                                if (verify(librarian, password)) {
+                                if (librarian.verifyPassword(password)) 
+                                {
                                     System.out.print("Enter new password: ");
                                     password = scan.next();
                                     librarian.setPassword(password);
                                 }
-                            // Exit prompt or invalid returns to menu    
-                            } else {
+                            } 
+                            else 
+                            {
                                 System.out.println("Returning to Librarian Menu...\n");
                             }
+
                         case 4:
                             break;
                             
@@ -171,10 +150,10 @@ public class LibraryManagementTester {
                 }
                 
                 continue;
-              
-             // Creates a new student account   
-            } else if (login == 3) {
                 
+            } 
+            else if (login == CREATE_NEW_STUDENT) 
+            {
                 // Prompts user for name and password
                 System.out.print("Enter Your Name: ");
                 studentName = scan.next();
@@ -183,35 +162,33 @@ public class LibraryManagementTester {
                 studentPassword = scan.next();
                 
                 // Creates a new student with next available ID and given information
-                students[studentAccounts] = new Student(studentAccounts, studentName, studentPassword);
-                studentID = studentAccounts;
-                studentAccounts++;
+                students[numActiveStudents] = new Student(numActiveStudents, studentName, studentPassword);
+                studentID = numActiveStudents;
+                numActiveStudents++;
                 
                 // Confirm to user that account creation successful
                 System.out.println("\nNew Student Account Succesfully Created: ");
                 System.out.println("Name: " + studentName);
                 System.out.println("ID: " + studentID);
                 System.out.println("Password: " + studentPassword);
-                System.out.println();
-              
-            // Invalid selection in the main menu    
-            } else {
+                System.out.println();  
+            } 
+            else 
+            {
                 System.out.println("Invalid Selection");
                 System.out.println("Returning to Main Menu...\n");
                 continue;
             }
 
-            // Prints the student menu
             printStudentMenu();
             
-            // Loop until student logs out of system (input 7)
-            while ((selection = scan.nextInt()) != 7) {
-            
-                switch (selection) {
-                    
+            while ((selection = scan.nextInt()) != 7) 
+            {
+                switch (selection) 
+                {
                     // Browses all available books in the library
                     case 1: 
-                        library.printBookShelf();
+                        Library.printBookShelf();
                         break;
                     
                     // Prints out each book that the current student is borrowing    
@@ -223,7 +200,8 @@ public class LibraryManagementTester {
                     case 3:
                         
                         // Checks if student is currently borrowing the max amount of books
-                        if (students[studentID].getBooksBorrowed().size() >= 3) {
+                        if (students[studentID].getBooksBorrowed().size() >= 3) 
+                        {
                             System.out.println("You have the maximum number of books borrowed, "
                                                + "please return at least one of the following to borrow this book: ");
                             students[studentID].printBooksBorrowed();
@@ -233,10 +211,11 @@ public class LibraryManagementTester {
                         // Prompt user to enter book ID and search for book in library
                         System.out.print("Enter the Book ID of Borrowing Book: ");
                         bookID = scan.nextInt();
-                        bookSelection = findBookinLibrary(library, bookID);
+                        bookSelection = Library.findBookinLibrary(bookID);
                         
                         // Book was not found in library if the selection is null
-                        if (bookSelection == null) {
+                        if (bookSelection == null) 
+                        {
                             System.out.println("Book not found in library\n");
                             break;
                         }
@@ -247,15 +226,19 @@ public class LibraryManagementTester {
                         
                         // If valid verification, student borrows book and book
                         // at index is removed from library
-                        if (verify(librarian, password)) {
-                            students[studentID].borrowBook(library, bookSelection);
-                            library.removeBookFromShelf(bookSelection);
+                        if (librarian.verifyPassword(password)) 
+                        {
+                            students[studentID].borrowBook(bookSelection);
+                            Library.removeBookFromShelf(bookSelection);
                             
                         // Invalid admin verification    
-                        } else {
+                        } 
+                        else 
+                        {
                             System.out.println("Invalid Verification");
                             System.out.println("Returning to Student Menu...\n");
                         }
+
                         break;
                     
                     // Student returns a book they are current borrowing
@@ -265,11 +248,12 @@ public class LibraryManagementTester {
                         System.out.print("Enter Book ID of Returning Book: ");
                         bookID = scan.nextInt();
                         
-                        bookSelection = findBookinAccount(students[studentID], bookID);
+                        bookSelection = students[studentID].findBookinAccount(bookID);
                         
                         // Selection was not found in students account (not 
                         // current borrowing book)
-                        if (bookSelection == null) {
+                        if (bookSelection == null) 
+                        {
                             System.out.println("Book not found in account\n");
                             break;
                         }
@@ -280,16 +264,20 @@ public class LibraryManagementTester {
                         
                         // If verification successful, student returns the book
                         // to the library
-                        if (verify(librarian, password)) {
-                            students[studentID].returnBook(library, bookSelection);
+                        if (librarian.verifyPassword(password)) 
+                        {
+                            students[studentID].returnBook(bookSelection);
                             System.out.println("\nSuccessfully Returned Book: ");
                             bookSelection.printBookInfo();
                             
                         // Invalid admin verification    
-                        } else {
+                        } 
+                        else 
+                        {
                             System.out.println("Invalid Verification");
                             System.out.println("Returning to Student Menu...\n");
                         }
+
                         break;
                     
                     // Prints the student's personal transaction history with library
@@ -307,24 +295,28 @@ public class LibraryManagementTester {
                         selection = scan.nextInt();
                         
                         // Student selects to change their password
-                        if (selection == 1) {
-                            
+                        if (selection == 1) 
+                        {                            
                             // Verify with the current password
                             System.out.print("Enter current password: ");
                             password = scan.next();
                             
                             // If valid, student enters and sets password to new
                             // password
-                            if (students[studentID].getPassword().equals(password)) {
+                            if (students[studentID].getPassword().equals(password)) 
+                            {
                                 System.out.print("Enter new password: ");
                                 password = scan.next();
                                 students[studentID].setPassword(password);
                             }
                         
                         // Exit from settings menu
-                        } else {
+                        } 
+                        else 
+                        {
                             System.out.println("Returning to Student Menu...\n");
-                        }   
+                        }  
+
                         break;
                         
                     case 7:
@@ -340,36 +332,29 @@ public class LibraryManagementTester {
             System.out.println("Successfully Logged Out\n");
         }
     }
-    
-    // Verifies whether the given password is equal to admin's password
-    public static boolean verify(Librarian librarian, String password) {
-        return librarian.getPassword().equals(password);
+
+    public static void createUser(String name, String password)
+    {
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Enter Name: ");
+        name = scan.nextLine();
+        
+        System.out.print("Enter Password: ");
+        password = scan.nextLine();
+
+        scan.close();
+    }
+
+    public static void printMainMenu()
+    {
+        System.out.println("\nMain Menu");
+        System.out.println("1: Login (Student)");
+        System.out.println("2: Login (Librarian)");
+        System.out.println("3: Create New Account (Student)\n");
     }
     
-    // Returns the Book found in the student's account from the given ID,
-    // otherwise returns null
-    public static Book findBookinAccount(Student s, int bookID) {
-        for (int i = 0; i < s.getBooksBorrowed().size(); i++) {
-            if (s.getBooksBorrowed().get(i).getID() == bookID) {
-                return s.getBooksBorrowed().get(i);
-            }
-        }
-        return null;
-    }
-    
-    // Returns the Book found in the Library from the given ID,
-    // otherwise returns null
-    public static Book findBookinLibrary(Library lib, int bookID) {
-        for (int i = 0; i < lib.getBookShelf().length; i++) {
-            if (lib.getBookShelf()[bookID] != null) {
-                return lib.getBookShelf()[bookID];
-            }
-        }
-        return null;
-    }
-    
-    // Prints each option of the Librarian Menu
-    public static void printLibrarianMenu() {
+    public static void printLibrarianMenu() 
+    {
         System.out.println("Librarian Account Menu");
         System.out.println("1. Get Student Info");
         System.out.println("2. View All Transactions");
@@ -377,8 +362,8 @@ public class LibraryManagementTester {
         System.out.println("4. Log Out\n");
     }
     
-    // Prints each option of the Student Menu
-    public static void printStudentMenu() {
+    public static void printStudentMenu() 
+    {
         System.out.println("Student Account Menu");
             System.out.println("1. Browse Books");
             System.out.println("2. Books Currently Borrowing");
@@ -389,8 +374,8 @@ public class LibraryManagementTester {
             System.out.println("7. Log Out\n");
     }
     
-    // Prints each option of the Settings Menu
-    public static void printSettingsMenu() {
+    public static void printSettingsMenu() 
+    {
         System.out.println("Details and Settings: ");
         System.out.println("1. Change Password");
         System.out.println("2. Exit");

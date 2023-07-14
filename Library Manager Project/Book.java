@@ -4,42 +4,31 @@
 // Book class defines a book object
 // Book has an id, title, author, and description/summary
 
-public class Book {
+public class Book 
+{
     private int id;
     private String title, author;
     private String summary;
     
-    // Constructor sets the information with given parameters
-    public Book (int id, String title, String author, String summary) {
+    public Book (int id, String title, String author, String summary) 
+    {
         this.id = id;
         this.title = title;
         this.author = author;
         this.summary = summary;
     }
     
-    public int getID() {
-        return id;
-    }
+    public int getID() 
+    {
+        return this.id;
+    }   
     
-    public String getTitle() {
-        return title;
-    }
-    
-    public String getAuthor() {
-        return author;
-    }
-    
-    public String getSummary() {
-        return summary;
-    }
-    
-    // Prints out each field of the specific book
-    public void printBookInfo() {
-        
-        System.out.println("Book ID: " + id);
-        System.out.println("Book Title: " + title);
-        System.out.println("Book Author: " + author);
-        System.out.println("Book Summary: " + summary);
+    public void printBookInfo() 
+    {
+        System.out.println("Book ID: " + this.id);
+        System.out.println("Book Title: " + this.title);
+        System.out.println("Book Author: " + this.author);
+        System.out.println("Book Summary: " + this.summary);
         System.out.println();
     }
 }
