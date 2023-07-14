@@ -27,6 +27,9 @@ public class Library
 
     public static Book findBookinLibrary(int bookID) 
     {
+        if (bookID < 0 || bookID >= NUM_BOOKS)
+            return null;
+
         return bookShelf[bookID];
     }
     

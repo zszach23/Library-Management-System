@@ -205,7 +205,7 @@ public class LibraryManagementTester
         } 
 
         System.out.println("\nSuccessfully Logged Out");
-        System.out.println("Returning to Main Menu...\n");
+        printConfirmation("Main");
     }
 
     public static void useStudentMenu(int studentID)
@@ -247,7 +247,8 @@ public class LibraryManagementTester
                     
                     if (bookSelection == null) 
                     {
-                        System.out.println("Book not found in library\n");
+                        System.out.println("\nBook not found in library\n");
+                        printConfirmation("Student");
                         break;
                     }
                     
@@ -276,7 +277,8 @@ public class LibraryManagementTester
                     
                     if (bookSelection == null) 
                     {
-                        System.out.println("Book not found in account\n");
+                        System.out.println("\nBook not found in account\n");
+                        printConfirmation("Student");
                         break;
                     }
                     
@@ -291,9 +293,10 @@ public class LibraryManagementTester
                     } 
                     else 
                     {
-                        System.out.println("Invalid Verification");
-                        System.out.println("Returning to Student Menu...\n");
+                        System.out.println("\nInvalid Verification\n");
                     }
+
+                    printConfirmation("Student");
 
                     break;
                 
@@ -400,6 +403,7 @@ public class LibraryManagementTester
         System.out.println();
     }
 
+    // User prompted to confirm to return to 'menu'
     public static void printConfirmation(String menu)
     {
         Scanner scan = new Scanner(System.in);
