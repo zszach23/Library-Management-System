@@ -4,7 +4,7 @@ Contains the source code for a multi file object oriented project that simulates
 
 To run:
 ```
-javac LibraryManagementTester.java
+javac *.java
 
 java LibraryManagementTester
 ```
@@ -12,6 +12,8 @@ java LibraryManagementTester
 ### Files
 
 * **Management System** acts as a virtual menu system that can be logged in by students and librarian. The user can also change and view settings.
+
+* **System Database** is a simulated data base that holds user information. It is how the menu system interacts with user data, including IDs and passwords.
 
 * **Users**
 
