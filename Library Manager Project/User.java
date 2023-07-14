@@ -39,7 +39,7 @@ public abstract class User
 
     public boolean verifyPassword(String password) 
     {
-        return password.equals(this.password);
+        return this.password.equals(password);
     }
     
     public void printUserInfo() 
@@ -47,6 +47,7 @@ public abstract class User
         System.out.println("User ID: " + this.id);
         System.out.println("Name: " + this.name);
         System.out.println("Password: " + this.password);
+        System.out.println();
     }
     
 }
