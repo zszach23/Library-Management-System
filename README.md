@@ -11,7 +11,7 @@ java LibraryManagementTester
 
 ### Files
 
-* **Management System** acts as a virtual menu system that can be logged in by students and librarian. The user can also change and view settings.
+* **Library Management Tester** acts as a virtual menu system that can be logged in by students and librarian. The user can also change and view settings.
 
 * **System Database** is a simulated data base that holds user information. It is how the menu system interacts with user data, including IDs and passwords.
 
